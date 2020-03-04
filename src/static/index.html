@@ -1,0 +1,174 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel='shortcut icon' type='image/x-icon' href='favicon.ico' />
+    <title>DNLA Player</title>
+  </head>
+<body>
+  <link rel="stylesheet" href="./site.css">
+
+  <div class="sidenav" >
+    <br/>
+    <div class="sidenav_title">Navigation</div>
+    <span id="dir_list" class="sidenav_content">Directories</span>
+    <div class="sidenav_title">Videos</div>
+    <span class="sidenav_content" id="media_list">Media</span>
+    
+
+    <div class="sidenav_player_ctrl">
+    <div class="sidenav_title">Player</div>      
+
+    <div class="sidenav_content">
+    <div class="side_tab">
+      <span class="tab_cell">
+	<a href="#" onclick="toggle()" id="play_btn"><i class="material-icons">play_circle_outline</i></a>
+      </span>
+      <span class="tab_cell_right valign-center">
+      <i class="material-icons">volume_up</i>
+	<select id="volume_btn" onchange="change_volume()">
+	  <option value="0">off</option>
+	  <option value="0.2">20%</option>
+	  <option value="0.5">50%</option>
+	  <option value="0.7">70%</option>
+	  <option value="1">100%</option>
+	</select>
+      </span>
+
+    </div>
+    </div>
+    </div>
+    
+  </div>
+
+  <div id="main">
+    <center>
+      <video class="responsive" controls src="http://10.77.3.123:8200/MediaItems/202.mp4" id="player" onplay="toggle_btn()" onpause="toggle_btn()" onvolumechange="volume_changed()" autoplay="false"></video>
+    </center>
+  </div>
+
+  <script>
+    function init() {
+	restore_volume();
+	path='';
+	load('/');
+    }
+
+    function restore_volume() {
+	var tmp = localStorage.getItem('volume');
+	if (tmp == null) {
+	    volume_btn.value = "0.5";
+	} else {
+	    volume_btn.value = tmp;
+	}
+	change_volume();
+    }
+	
+    function change_volume() {
+	player.volume = volume_btn.value;
+	localStorage.setItem('volume', volume_btn.value);
+    }
+
+    function volume_changed() {
+	if (player.muted == true) {
+	    volume_btn.value = "0";
+	} else {
+	    volume_btn.value = player.volume;
+	}
+	localStorage.setItem('volume', volume_btn.value);
+    }
+
+    function load(target) {
+	var xhr = new XMLHttpRequest();
+	var base_url = "/media";
+	var url = base_url+target;
+
+	xhr.onreadystatechange = function() {
+	    if (xhr.readyState == 4 && xhr.status == 200) { 
+		var jsonData = JSON.parse(xhr.responseText);
+		parse_media(jsonData);
+	    }
+	};
+	xhr.open("GET", url, true);
+	xhr.send();
+    }
+
+    function load_target(target) {
+	if (target=='/') {path='';}
+	else {
+            target = path+'/'+target;
+            path=target;
+	}
+	load(target);
+    }
+
+    function parse_media(data) {
+	var media_output='';
+	var dir_output = '';
+	dir_output+='<div class="side_tab"><span class="tab_cell"><a href="#" onclick=\'load_target("/")\'>-[ Home ]-</a></span></div>';
+	for (var media in data) {
+            var item = data[media];
+            if (item.folder == false) {
+		var href='<a href="#" onclick=\'play("' + item.url +'")\'>';
+		media_output+='<div class="side_tab">';
+		media_output+='<span class="tab_cell">'+href+item.title+'</a></span>';
+		media_output+='<span class="tab_cell_right">'+ duration_display(item.duration)+'</span>';
+		media_output+='</div>';
+            }
+            else {
+		var href='<a href="#" onclick=\'load_target("'+ item.title+'")\'>';
+		dir_output+='<div class="side_tab">';
+		dir_output+='<span class="tab_cell">'+href+item.title+'</a></span>';
+		dir_output+='</div>';
+            }
+	}
+	media_output+='';
+	dir_output+='</ul>';
+	media_list.innerHTML = media_output;
+	dir_list.innerHTML = dir_output;
+    }
+
+    function play(url) {
+	player.setAttribute("src",url);
+	player.play();
+	volume_btn.value = player.volume;
+    }
+
+    function duration_display(duration) {
+	var result = duration.split(':');
+	var h = parseInt(result[0]);
+	var min = parseInt(result[1]);
+	var sec = result[2].split('.')[0];
+	var result = '';
+	if (h!=0) {
+	    result+=h + 'h' + min;
+	} else {
+	    result+=min+':'+ sec;
+	}
+		
+	return result;
+    }
+
+    
+    function toggle_btn(event) {
+	if (player.paused == true) {
+            document.getElementById("play_btn").innerHTML='<i class="material-icons">play_circle_outline</i>';
+	}
+	else {
+            document.getElementById("play_btn").innerHTML='<i class="material-icons">pause_circle_outline</i>';
+	}
+    }
+
+    function toggle() {
+	if (player.paused == true) {
+            player.play();
+	}
+	else {
+            player.pause();
+	}
+    }
+
+    init();
+  </script>
+
+</body>
+</html>
