@@ -1,0 +1,7 @@
+services:
+    dlna-web:
+        container_name: dlna-web
+        build: dlna-web
+        restart: unless-stopped
+        stop_grace_period: 1s 
+        network_mode: host
