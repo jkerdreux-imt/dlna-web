@@ -1,2 +1,2 @@
-#SERVER_PATH='/dlna: minidlna/'
-SERVER_PATH="/d510: minidlna/Browse Folders/divx/"
+SERVER_PATH = '/dlna: minidlna/'
+# SERVER_PATH = "/data: minidlna/Browse Folders/divx/"
