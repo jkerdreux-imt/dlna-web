@@ -3,6 +3,7 @@
 import dlna
 import json
 import os
+import coloredlogs
 
 from bottle import route, run, template,static_file,get,response,redirect
 from config import SERVER_PATH
@@ -40,5 +41,6 @@ def list_media(path):
 
 
 if __name__ == '__main__':
+    coloredlogs.install(level='INFO')
     run(host='0.0.0.0', port=7777)
     
