@@ -10,7 +10,6 @@ RUN /tmp/install.sh && rm /tmp/install.sh
 
 # run
 COPY ./files/run.sh /opt/dlna-web/
-RUN echo SERVER_PATH = \"/data: minidlna/divx/\" > /opt/dlna-web/src/config.py
 CMD ["/opt/dlna-web/run.sh"]
 
 
