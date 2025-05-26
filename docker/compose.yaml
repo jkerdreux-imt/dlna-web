@@ -7,4 +7,4 @@ services:
         stop_grace_period: 1s 
         network_mode: host
         environment:
-            SERVER_PATH: '/dlna: minidlna/divx/'
+            SERVER_PATH: '/dlna: minidlna/'
