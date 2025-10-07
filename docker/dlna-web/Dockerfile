@@ -26,6 +26,7 @@ ENV LANG=C.UTF-8
 
 # Copy only the necessary files from the builder stage
 COPY --from=builder /opt/dlna-web /opt/dlna-web
+COPY --from=builder /root/.local/share/uv/ /root/.local/share/uv/ 
 
 # Copy the run script
 COPY docker/dlna-web/files/run.sh /opt/dlna-web/
