@@ -18,7 +18,7 @@ COPY requirements.txt .
 RUN ~/.local/bin/uv python install 3.8
 RUN ~/.local/bin/uv python pin 3.8
 RUN ~/.local/bin/uv venv --seed
-RUN source .venv/bin/activate && pip install -r requirements.txt
+RUN .venv/bin/pip install -r requirements.txt
 
 # Stage 2: Runtime
 FROM debian:trixie-slim
