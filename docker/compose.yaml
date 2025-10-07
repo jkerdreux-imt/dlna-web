@@ -1,7 +1,9 @@
 services:
     dlna-web:
         container_name: dlna-web
-        # build: dlna-web
+        build:
+            context: .
+            dockerfile: ./docker/dlna-web/Dockerfile
         # image: jkerdreux-imt/dlna-web:latest
         image: ghcr.io/jkerdreux-imt/dlna-web:latest
         restart: unless-stopped
