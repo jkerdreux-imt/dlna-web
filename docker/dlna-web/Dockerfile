@@ -2,7 +2,7 @@ FROM debian:trixie AS builder
 ENV LANG=C.UTF-8
 
 # Install build dependencies
-RUN apt-get update && apt-get -y install pipx gcc python3.8 python3.8-venv && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get -y install pipx gcc && rm -rf /var/lib/apt/lists/*
 
 # Install uv globally
 RUN pipx install uv
