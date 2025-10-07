@@ -1,8 +1,9 @@
 services:
     dlna-web:
         container_name: dlna-web
-        build: dlna-web
-        image: jkerdreux-imt/dlna-web:latest
+        # build: dlna-web
+        # image: jkerdreux-imt/dlna-web:latest
+        image: ghcr.io/jkerdreux-imt/dlna-web:latest
         restart: unless-stopped
         stop_grace_period: 1s 
         network_mode: host
